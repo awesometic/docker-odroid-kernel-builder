@@ -4,8 +4,7 @@ LABEL maintainer="Awesometic <awesometic.lab@gmail.com>" \
 
 # Environments
 ENV SBC="" \
-    MAKE_J="1" \
-    MAKE_MENUCONFIG="false" \
+    MAKE_ARGS="" \
     MEDIA_BOOT="" \
     MEDIA_ROOT=""
 
@@ -41,6 +40,6 @@ ADD config/toolchains/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux.tar.xz /t
 ADD config/init.sh /
 RUN chmod a+x /init.sh
 
-VOLUME [ "/kernel" ]
 WORKDIR /kernel
+VOLUME [ "/kernel" ]
 ENTRYPOINT [ "/init.sh" ]
