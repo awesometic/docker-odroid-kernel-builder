@@ -14,10 +14,6 @@ echo -e "Variables:
 
 # Aliases
 alias make="make -j $MAKE_J"
-alias move_to_kernel_dir="cd /kernel"
-
-msg "Move to /kernel directory..."
-move_to_kernel_dir
 
 msg "Set environment variables for $SBC..."
 if [ "$SBC" = "XU3" ] || [ "$SBC" = "xu3" ]; then
@@ -52,7 +48,7 @@ else
 fi
 
 msg "Do make $DEFCONFIG..."
-make "$DEFCONFIG" -j "$MAKE_J"
+make "$DEFCONFIG"
 
 if [ "$MAKE_MENUCONFIG" = "true" ]; then
     msg "Do make menuconfig..."

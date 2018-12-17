@@ -25,7 +25,7 @@ RUN apt-get -y -q install libqt4-dev
 RUN apt-get -y -q install lib32z1
 RUN apt-get -y -q install libc6-i386
 RUN apt-get -y -q install lib32stdc++6
-RUN apt-get -y -q install zlib1g:i386
+# RUN apt-get -y -q install zlib1g:i386
 RUN apt-get clean
 
 # Create directories to use
@@ -41,5 +41,6 @@ ADD config/toolchains/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux.tar.xz /t
 ADD config/init.sh /
 RUN chmod a+x /init.sh
 
-VOLUME [ "/host" ]
+VOLUME [ "/kernel" ]
+WORKDIR /kernel
 ENTRYPOINT [ "/init.sh" ]
