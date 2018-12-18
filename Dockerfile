@@ -10,6 +10,7 @@ ENV SBC="" \
 
 # Install dependencies
 # It is divided into each command to prevent from barely caused download fail
+RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get -y -q upgrade
 RUN apt-get -y -q install vim
 RUN apt-get -y -q install git
@@ -24,7 +25,7 @@ RUN apt-get -y -q install libqt4-dev
 RUN apt-get -y -q install lib32z1
 RUN apt-get -y -q install libc6-i386
 RUN apt-get -y -q install lib32stdc++6
-# RUN apt-get -y -q install zlib1g:i386
+RUN apt-get -y -q install zlib1g:i386
 RUN apt-get clean
 
 # Create directories to use
@@ -41,5 +42,5 @@ ADD config/init.sh /
 RUN chmod a+x /init.sh
 
 WORKDIR /kernel
-VOLUME [ "/kernel" ]
+VOLUME [ "/kernel", "/media/boot", "/media/root" ]
 ENTRYPOINT [ "/init.sh" ]
