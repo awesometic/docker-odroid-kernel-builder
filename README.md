@@ -8,9 +8,11 @@ This has each toolchain of the ODROID boards in advance. So you can compile with
 
 ## Is this run on macOS or Windows
 
-Unfortunately, **nope**.
+Unfortunately, **partly not**.
 
 This image runs on Ubuntu Linux based, which means that it runs on Linux kernel. In macOS or Windows, this Docker will run this image on Linux VM due to the absence of the Linux kernel on them.
+
+So that performance is tooooo slower than the native Linux machine does. In my case, on macOS 10.14 with E3-1230v3 processor, it takes more than 2 hours for compiling XU4 kernel.
 
 For further information, please refer to [References](#References) section of this documents.
 
