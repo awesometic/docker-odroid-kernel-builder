@@ -35,7 +35,7 @@ elif [ "$SBC" = "XU4" ] || [ "$SBC" = "xu4" ]; then
     export CROSS_COMPILE=arm-linux-gnueabihf-
     export PATH=/toolchains/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/bin:$PATH
     export DEFCONFIG="odroidxu4_defconfig"
-    export BOOT_FILES="arch/arm/boot/zImage arch/arm/boot/dts/meson8b_odroidxu?.dtb"
+    export BOOT_FILES="arch/arm/boot/zImage arch/arm/boot/dts/exynoss5422-odroidxu4*.dtb"
 elif [ "$SBC" = "C1" ] || [ "$SBC" = "c1" ]; then
     export ARCH=arm
     export CROSS_COMPILE=arm-linux-gnueabihf-
@@ -76,7 +76,7 @@ else
 
     if [ -d "/media/boot" ]; then
         msg "Move new kernel files to boot media..."
-        cp -f "$BOOT_FILES" /media/boot && sync
+        cp -vf "$BOOT_FILES" /media/boot && sync
     fi
 
     if [ -d "/media/root" ]; then
