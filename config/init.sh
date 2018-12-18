@@ -29,25 +29,38 @@ if [ "$SBC" = "XU3" ] || [ "$SBC" = "xu3" ]; then
     export CROSS_COMPILE=arm-eabi-
     export PATH=/toolchains/arm-eabi-4.6/bin:$PATH
     export DEFCONFIG="odroidxu3_defconfig"
-    export BOOT_FILES="arch/arm/boot/zImage arch/arm/boot/dts/exynos5422-odroidxu3.dtb"
+    export BOOT_FILES=(
+        "/kernel/arch/arm/boot/zImage"
+        "/kernel/arch/arm/boot/dts/exynos5422-odroidxu3.dtb"
+    )
 elif [ "$SBC" = "XU4" ] || [ "$SBC" = "xu4" ]; then
     export ARCH=arm
     export CROSS_COMPILE=arm-linux-gnueabihf-
     export PATH=/toolchains/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/bin:$PATH
     export DEFCONFIG="odroidxu4_defconfig"
-    export BOOT_FILES="arch/arm/boot/zImage arch/arm/boot/dts/exynoss5422-odroidxu4*.dtb"
+    export BOOT_FILES=(
+        "/kernel/arch/arm/boot/zImage"
+        "/kernel/arch/arm/boot/dts/exynoss5422-odroidxu4.dtb"
+        "/kernel/arch/arm/boot/dts/exynoss5422-odroidxu4-kvm.dtb"
+    )
 elif [ "$SBC" = "C1" ] || [ "$SBC" = "c1" ]; then
     export ARCH=arm
     export CROSS_COMPILE=arm-linux-gnueabihf-
     export PATH=/toolchains/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux/bin:$PATH
     export DEFCONFIG="odroidc_defconfig"
-    export BOOT_FILES="arch/arm/boot/uImage arch/arm/boot/dts/meson8b_odroidc.dtb"
+    export BOOT_FILES=(
+        "/kernel/arch/arm/boot/uImage"
+        "/kernel/arch/arm/boot/dts/meson8b_odroidc.dtb"
+    )
 elif [ "$SBC" = "C2" ] || [ "$SBC" = "c2" ]; then
     export ARCH=arm64
     export CROSS_COMPILE=aarch64-linux-gnu-
     export PATH=/toolchains/gcc-linaro-aarch64-linux-gnu-4.9-2014.09_linux/bin:$PATH
     export DEFCONFIG="odroidc2_defconfig"
-    export BOOT_FILES="arch/arm64/boot/Image arch/arm64/boot/dts/meson64_odroidc2.dtb"
+    export BOOT_FILES=(
+        "/kernel/arch/arm64/boot/Image"
+        "/kernel/arch/arm64/boot/dts/meson64_odroidc2.dtb"
+    )
 else
     msg "You have to specify what ODROID SBC you will build a kernel."
     msg "This image supports { only ODROID: KERNEL }"
@@ -76,7 +89,12 @@ else
 
     if [ -d "/media/boot" ]; then
         msg "Move new kernel files to boot media..."
-        cp -vf "$BOOT_FILES" /media/boot && sync
+        
+        for FILE in "${BOOT_FILES[@]}"; do
+            cp -vf "$FILE" /media/boot
+        done
+
+        sync
     fi
 
     if [ -d "/media/root" ]; then
