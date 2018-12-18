@@ -10,7 +10,7 @@ This has each toolchain of the ODROID boards in advance. So you can compile with
 
 Unfortunately, **nope**.
 
-This image runs on Ubuntu Linux, which means that it runs on Linux kernel. In macOS or Windows, this Docker runs this image on Linux VM due to the absence of the kernel on them.
+This image runs on Ubuntu Linux based, which means that it runs on Linux kernel. In macOS or Windows, this Docker will run this image on Linux VM due to the absence of the Linux kernel on them.
 
 For further information, please refer to [References](#References) section of this documents.
 
@@ -23,10 +23,21 @@ docker run -it --rm \
 -v /kernel/source/path:/kernel \
 -v /boot/media/boot/partition:/media/boot \
 -v /boot/media/root/partition:/media/root \
--e SBC=name of sbc without odroid prefix
+-e SBC=name of the sbc without the prefix odroid \
 -e MAKE_ARGS=make arguments you would like to use \
 awesometic/odroid-kernel-builder
 ```
+
+Make sure that your boot media mounted in advance to pass its partitions to container as the volumes. In most of the Linux DISTROs, boot media is mounted under **/media/$USER** directory if you have inserted that.
+
+You can put your ODROID device name as a value of **SBC** environment variable. Current supported list with board and its kernel is here.
+
+* **XU3**: 3.10, 4.9
+* **XU4**: 4.14 (confirmed)
+* **C1**: 3.10
+* **C2**: 3.14, 3.16 (confirmed)
+
+You can build 3.10 or 4.9 kernel for your **XU4**, but you have to put **XU3** to compile/install properly.
 
 You can put your custom parameters for make command as a value of **MAKE_ARGS** environment variable. Here is the confirmed operations.
 
