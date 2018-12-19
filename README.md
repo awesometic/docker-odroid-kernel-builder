@@ -23,6 +23,7 @@ Basic usage is,
 ```bash
 docker run -it --rm \
 -v /kernel/source/path:/kernel \
+-v /path/to/output:/output \
 -v /boot/media/boot/partition:/media/boot \
 -v /boot/media/root/partition:/media/root \
 -e SBC=name of the sbc without the prefix odroid \
@@ -30,7 +31,9 @@ docker run -it --rm \
 awesometic/odroid-kernel-builder
 ```
 
-Make sure that your boot media mounted in advance to pass its partitions to container as the volumes. In most of the Linux DISTROs, boot media is mounted under **/media/$USER** directory if you have inserted that.
+If you want to install kernel/modules to your boot media automatically, make sure that your boot media mounted in advance to pass its partitions to container as the volumes. In most of the Linux DISTROs, boot media is mounted under **/media/$USER** directory if you have inserted that.
+
+If there's no given boot media partitions, compiled files copied to **/output** directory.
 
 You can put your ODROID device name as a value of **SBC** environment variable. Current supported list with board and its kernel is here.
 
@@ -70,4 +73,4 @@ Do not run this image as a daemon. Will be terminated if it doesn't have any job
 
 ## Author
 
-Awesometic (Yang Deokgyu)
+Awesometic <awesometic.lab@gmail.com>
