@@ -16,12 +16,19 @@ else
     MEDIA_ROOT=False
 fi
 
+if [ -d "/output" ]; then
+    OUTPUT_DIR=True
+else
+    OUTPUT_DIR=False
+fi
+
 # Display environment variables
 echo -e "Variables:
 \\t- SBC=$SBC
 \\t- MAKE_ARGS=$MAKE_ARGS
 \\t- MEDIA_BOOT=$MEDIA_BOOT
-\\t- MEDIA_ROOT=$MEDIA_ROOT"
+\\t- MEDIA_ROOT=$MEDIA_ROOT
+\\t- OUTPUT_DIR=$OUTPUT_DIR"
 
 msg "Set environment variables for $SBC..."
 if [ "$SBC" = "XU3" ] || [ "$SBC" = "xu3" ]; then
