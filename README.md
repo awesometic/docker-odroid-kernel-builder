@@ -31,31 +31,35 @@ docker run -it --rm \
 awesometic/odroid-kernel-builder
 ```
 
-If you want to install kernel/modules to your boot media automatically, make sure that your boot media mounted in advance to pass its partitions to container as the volumes. In most of the Linux DISTROs, boot media is mounted under **/media/$USER** directory if you have inserted that.
+### Choose a type of SBC
 
-If there's no given boot media partitions, compiled files copied to **/output** directory.
-
-You can put your ODROID device name as a value of **SBC** environment variable. Current supported list with board and its kernel is here.
+You have to put your ODROID device name as a value of **SBC** environment variable. Current supported list with board and its supported kernel versions is here.
 
 * **XU3**: 3.10, 4.9
 * **XU4**: 4.14 (confirmed)
 * **C1**: 3.10
 * **C2**: 3.14, 3.16 (confirmed)
 
-You can build 3.10 or 4.9 kernel for your **XU4**, but you have to put **XU3** to compile/install properly.
+### Parameters for make command
 
 You can put your custom parameters for make command as a value of **MAKE_ARGS** environment variable. Here is the confirmed operations.
 
-* **defconfig** for `make odroid*_defconfig`{.bash}
-* **menuconfig** for `make menuconfig`{.bash}
-* **clean** for `make clean`{.bash}
-* **No arguments** for `make`{.bash}
+* **defconfig** for `make odroid?_defconfig`
+* **menuconfig** for `make menuconfig`
+* **clean** for `make clean`
+* **No arguments** for `make`
 
-You can't use modules_install seperately, but you can just compile source code with cached data to do that.
+### Install automatically to your boot media
 
-The volumes for boot/root partition can be omitted so that only the kernel will be compiled.
+If you want to **install kernel/modules to your boot media automatically**, make sure that your boot media mounted in advance to pass its partitions to container as the volumes. In most of the Linux DISTROs, boot media is mounted under **/media/$USER** directory if you have inserted that.
 
-Do not run this image as a daemon. Will be terminated if it doesn't have any jobs.
+If there's no given boot media partitions, compiled files copied to **/output** directory.
+
+### Other imformations
+
+* The volumes for boot/root partition can be omitted so that only the kernel will be compiled.
+
+* Do not run this image as a daemon. Will be terminated if it doesn't have any jobs.
 
 ## References
 
@@ -73,4 +77,4 @@ Do not run this image as a daemon. Will be terminated if it doesn't have any job
 
 ## Author
 
-Awesometic <awesometic.lab@gmail.com>
+[Awesometic](awesometic.lab@gmail.com)
