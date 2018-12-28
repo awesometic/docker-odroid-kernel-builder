@@ -47,8 +47,8 @@ elif [ "$SBC" = "XU4" ] || [ "$SBC" = "xu4" ]; then
     export DEFCONFIG="odroidxu4_defconfig"
     export BOOT_FILES=(
         "/kernel/arch/arm/boot/zImage"
-        "/kernel/arch/arm/boot/dts/exynoss5422-odroidxu4.dtb"
-        "/kernel/arch/arm/boot/dts/exynoss5422-odroidxu4-kvm.dtb"
+        "/kernel/arch/arm/boot/dts/exynos5422-odroidxu4.dtb"
+        "/kernel/arch/arm/boot/dts/exynos5422-odroidxu4-kvm.dtb"
     )
 elif [ "$SBC" = "C1" ] || [ "$SBC" = "c1" ]; then
     export ARCH=arm
@@ -100,14 +100,21 @@ else
         for FILE in "${BOOT_FILES[@]}"; do
             cp -vf "$FILE" /media/boot
         done
-
-        sync
     fi
 
     if [ -d "/media/root" ]; then
         msg "Do make modules_install..."
         make -j "$(nproc)" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/media/root && sync
     fi
+
+    if [ -d "/output" ]; then
+        msg "Copy the result files to output directory..."
+        for FILE in "${BOOT_FILES[@]}"; do
+            cp -vf "$FILE" /output
+        done
+    fi
+
+    sync
 fi
 
 msg "All processes are done!"
