@@ -36,9 +36,11 @@ awesometic/odroid-kernel-builder
 You have to put your ODROID device name as a value of **SBC** environment variable. Current supported list with board and its supported kernel versions is here.
 
 * **XU3**: 3.10, 4.9
-* **XU4**: 4.14 (confirmed)
+* **XU4**: 4.14
 * **C1**: 3.10
-* **C2**: 3.14, 3.16 (confirmed)
+* **C2**: 3.14, 3.16
+
+**WIP:** I confirmed that it works for XU4 with 4.14 kernel, but in the other boards, it will need more tests.
 
 ### Parameters for make command
 
