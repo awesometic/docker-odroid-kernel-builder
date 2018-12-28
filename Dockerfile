@@ -2,11 +2,9 @@ FROM amd64/ubuntu:bionic
 LABEL maintainer="Awesometic <awesometic.lab@gmail.com>" \
       description="An image to make ODROID kernel build much easier."
 
-# Environments
+# Visible environments
 ENV SBC="" \
-    MAKE_ARGS="" \
-    MEDIA_BOOT="" \
-    MEDIA_ROOT=""
+    MAKE_ARGS=""
 
 # Install dependencies
 # It is divided into each command to prevent from barely caused download fail
@@ -19,6 +17,7 @@ RUN apt-get -y -q install bc
 RUN apt-get -y -q install lzop
 RUN apt-get -y -q install u-boot-tools
 RUN apt-get -y -q install build-essential
+RUN apt-get -y -q install kmod
 RUN apt-get -y -q install libssl-dev
 RUN apt-get -y -q install libncurses5-dev
 RUN apt-get -y -q install libqt4-dev
