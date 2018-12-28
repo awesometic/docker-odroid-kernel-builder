@@ -11,6 +11,7 @@ ENV SBC="" \
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get -y -q upgrade
 RUN apt-get -y -q install vim
+RUN apt-get -y -q install wget
 RUN apt-get -y -q install git
 RUN apt-get -y -q install gcc
 RUN apt-get -y -q install bc
@@ -28,17 +29,15 @@ RUN apt-get -y -q install zlib1g:i386
 RUN apt-get clean
 
 # Create directories to use
-RUN mkdir -p /host /opt/toolchains
+RUN mkdir -p /toolchains
 
-# Add toolchains
-ADD config/toolchains/arm-eabi-4.6.tar.gz /toolchains
-ADD config/toolchains/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf.tar.xz /toolchains
-ADD config/toolchains/gcc-linaro-aarch64-linux-gnu-4.9-2014.09_linux.tar.xz /toolchains
-ADD config/toolchains/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux.tar.xz /toolchains
-
-# Add a shell script for entry point
+# Add shell scripts
 ADD config/init.sh /
-RUN chmod a+x /init.sh
+ADD config/prepare_toolchains.sh /
+RUN chmod a+x /*.sh
+
+# Add toolchains from the internet
+RUN /prepare_toolchains.sh
 
 WORKDIR /kernel
 VOLUME [ "/kernel", "/media/boot", "/media/root" ]
