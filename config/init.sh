@@ -70,7 +70,7 @@ elif [ "$SBC" = "C2" ] || [ "$SBC" = "c2" ]; then
     )
 else
     msg "You have to specify what ODROID SBC you will build a kernel."
-    msg "This image supports { only ODROID: KERNEL }"
+    msg "This image supports only { ODROID-SBC: KERNEL }"
     msg "  - XU3: 3.10, 4.9"
     msg "  - XU4: 4.14"
     msg "  - C1 : 3.10"
