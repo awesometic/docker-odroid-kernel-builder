@@ -73,7 +73,7 @@ If there's no given boot media partitions, compiled files copied to **/output** 
 
 ### General
 
-* [Documents of "docker run"](https://docs.docker.com/engine/reference/commandline/run/#attach-to-stdinstdoutstderr--a)
+* [Documents of "docker run"](https://docs.docker.com/engine/reference/commandline/run/)
 * [EXT4 on macOS](https://apple.stackexchange.com/questions/140536/how-do-i-mount-ext4-using-os-x-fuse)
 * [Why performance is slow on macOS/Windows](https://www.reddit.com/r/docker/comments/7xvlye/docker_for_macwindows_performances_vs_linux/)
 
