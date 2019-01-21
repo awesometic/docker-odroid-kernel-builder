@@ -30,8 +30,11 @@ echo -e "Variables:
 \\t- MEDIA_ROOT=$MEDIA_ROOT
 \\t- OUTPUT_DIR=$OUTPUT_DIR"
 
+# Make it case insensitive
+shopt -s nocasematch
+
 msg "Set environment variables for $SBC..."
-if [ "$SBC" = "XU3" ] || [ "$SBC" = "xu3" ]; then
+if [ "$SBC" = "xu3" ]; then
     export ARCH=arm
     export CROSS_COMPILE=arm-eabi-
     export PATH=/toolchains/arm-eabi-4.6/bin:$PATH
@@ -40,7 +43,7 @@ if [ "$SBC" = "XU3" ] || [ "$SBC" = "xu3" ]; then
         "/kernel/arch/arm/boot/zImage"
         "/kernel/arch/arm/boot/dts/exynos5422-odroidxu3.dtb"
     )
-elif [ "$SBC" = "XU4" ] || [ "$SBC" = "xu4" ]; then
+elif [ "$SBC" = "xu4" ]; then
     export ARCH=arm
     export CROSS_COMPILE=arm-linux-gnueabihf-
     export PATH=/toolchains/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/bin:$PATH
@@ -50,7 +53,7 @@ elif [ "$SBC" = "XU4" ] || [ "$SBC" = "xu4" ]; then
         "/kernel/arch/arm/boot/dts/exynos5422-odroidxu4.dtb"
         "/kernel/arch/arm/boot/dts/exynos5422-odroidxu4-kvm.dtb"
     )
-elif [ "$SBC" = "C1" ] || [ "$SBC" = "c1" ]; then
+elif [ "$SBC" = "c1" ]; then
     export ARCH=arm
     export CROSS_COMPILE=arm-linux-gnueabihf-
     export PATH=/toolchains/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux/bin:$PATH
@@ -59,7 +62,7 @@ elif [ "$SBC" = "C1" ] || [ "$SBC" = "c1" ]; then
         "/kernel/arch/arm/boot/uImage"
         "/kernel/arch/arm/boot/dts/meson8b_odroidc.dtb"
     )
-elif [ "$SBC" = "C2" ] || [ "$SBC" = "c2" ]; then
+elif [ "$SBC" = "c2" ]; then
     export ARCH=arm64
     export CROSS_COMPILE=aarch64-linux-gnu-
     export PATH=/toolchains/gcc-linaro-aarch64-linux-gnu-4.9-2014.09_linux/bin:$PATH
