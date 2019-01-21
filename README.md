@@ -26,8 +26,9 @@ docker run -it --rm \
 -v /path/to/output:/output \
 -v /boot/media/boot/partition:/media/boot \
 -v /boot/media/root/partition:/media/root \
--e SBC=name of the sbc without the prefix odroid \
--e MAKE_ARGS=make arguments you would like to use \
+-e SBC={ name of the sbc without the prefix word odroid } \
+-e MAKE_ARGS={ make arguments you would like to use } \
+-e AUTO_INSTALL={ install automatically to the boot media after complete building kernel } \
 awesometic/odroid-kernel-builder
 ```
 
@@ -53,9 +54,9 @@ You can put your custom parameters for make command as a value of **MAKE_ARGS** 
 
 ### Install automatically to your boot media
 
-If you want to **install kernel/modules to your boot media automatically**, make sure that your boot media mounted in advance to pass its partitions to container as the volumes. In most of the Linux DISTROs, boot media is mounted under **/media/$USER** directory if you have inserted that.
+If you want to **install kernel/modules to your boot media automatically**, make sure that your boot media mounted in advance to pass its partitions to container as the volumes. Then give the environment variable **AUTO_INSTALL true**. In most of the Linux DISTROs, boot media is mounted under **/media/$USER** directory once you have inserted that.
 
-If there's no given boot media partitions, compiled files copied to **/output** directory.
+If **OUTPUT_DIR** is set, compiled files copied to **/output** directory.
 
 ### Other imformations
 
