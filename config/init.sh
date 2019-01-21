@@ -28,7 +28,8 @@ echo -e "Variables:
 \\t- MAKE_ARGS=$MAKE_ARGS
 \\t- MEDIA_BOOT=$MEDIA_BOOT
 \\t- MEDIA_ROOT=$MEDIA_ROOT
-\\t- OUTPUT_DIR=$OUTPUT_DIR"
+\\t- OUTPUT_DIR=$OUTPUT_DIR
+\\t- AUTO_INSTALL=$AUTO_INSTALL"
 
 # Make it case insensitive
 shopt -s nocasematch
@@ -100,20 +101,22 @@ else
         make -j "$(nproc)" "$MAKE_ARGS"
     fi
 
-    if [ -d "/media/boot" ]; then
-        msg "Move new kernel files to boot media..."
-        
-        for FILE in "${BOOT_FILES[@]}"; do
-            cp -vf "$FILE" /media/boot
-        done
+    if [ "$AUTO_INSTALL" = "true" ]; then
+        if [ "$MEDIA_BOOT" = "true" ]; then
+            msg "Move new kernel files to boot media..."
+            
+            for FILE in "${BOOT_FILES[@]}"; do
+                cp -vf "$FILE" /media/boot
+            done
+        fi
+
+        if [ "$MEDIA_ROOT" = "true" ]; then
+            msg "Do make modules_install..."
+            make -j "$(nproc)" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/media/root && sync
+        fi
     fi
 
-    if [ -d "/media/root" ]; then
-        msg "Do make modules_install..."
-        make -j "$(nproc)" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/media/root && sync
-    fi
-
-    if [ -d "/output" ]; then
+    if [ "$OUTPUT_DIR" = "true" ]; then
         msg "Copy the result files to output directory..."
         for FILE in "${BOOT_FILES[@]}"; do
             cp -vf "$FILE" /output
