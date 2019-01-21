@@ -85,6 +85,9 @@ if [ "$MAKE_ARGS" = "clean" ]; then
 elif [ "$MAKE_ARGS" = "defconfig" ]; then
     msg "Do make $DEFCONFIG..."
     make -j "$(nproc)" "$DEFCONFIG"
+elif [ "$MAKE_ARGS" = "menuconfig" ]; then
+    msg "Do make menuconfig..."
+    make -j "$(nproc)" "menuconfig"
 else
     if [ -z "$MAKE_ARGS" ]; then
         msg "Do make..."
