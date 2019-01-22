@@ -24,18 +24,15 @@ fi
 
 # Display environment variables
 echo -e "Variables:
-\\t- SBC=$SBC
-\\t- MAKE_ARGS=$MAKE_ARGS
-\\t- MEDIA_BOOT=$MEDIA_BOOT
-\\t- MEDIA_ROOT=$MEDIA_ROOT
-\\t- OUTPUT_DIR=$OUTPUT_DIR
-\\t- AUTO_INSTALL=$AUTO_INSTALL"
+\\t- SBC=${SBC,,}
+\\t- MAKE_ARGS=${MAKE_ARGS,,}
+\\t- MEDIA_BOOT=${MEDIA_BOOT,,}
+\\t- MEDIA_ROOT=${MEDIA_ROOT,,}
+\\t- OUTPUT_DIR=${OUTPUT_DIR,,}
+\\t- AUTO_INSTALL=${AUTO_INSTALL,,}"
 
-# Make it case insensitive
-shopt -s nocasematch
-
-msg "Set environment variables for $SBC..."
-if [ "$SBC" = "xu3" ]; then
+msg "Set environment variables for ${SBC,,}..."
+if [ "${SBC,,}" = "xu3" ]; then
     export ARCH=arm
     export CROSS_COMPILE=arm-eabi-
     export PATH=/toolchains/arm-eabi-4.6/bin:$PATH
@@ -44,7 +41,7 @@ if [ "$SBC" = "xu3" ]; then
         "/kernel/arch/arm/boot/zImage"
         "/kernel/arch/arm/boot/dts/exynos5422-odroidxu3.dtb"
     )
-elif [ "$SBC" = "xu4" ]; then
+elif [ "${SBC,,}" = "xu4" ]; then
     export ARCH=arm
     export CROSS_COMPILE=arm-linux-gnueabihf-
     export PATH=/toolchains/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/bin:$PATH
@@ -54,7 +51,7 @@ elif [ "$SBC" = "xu4" ]; then
         "/kernel/arch/arm/boot/dts/exynos5422-odroidxu4.dtb"
         "/kernel/arch/arm/boot/dts/exynos5422-odroidxu4-kvm.dtb"
     )
-elif [ "$SBC" = "c1" ]; then
+elif [ "${SBC,,}" = "c1" ]; then
     export ARCH=arm
     export CROSS_COMPILE=arm-linux-gnueabihf-
     export PATH=/toolchains/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux/bin:$PATH
@@ -63,7 +60,7 @@ elif [ "$SBC" = "c1" ]; then
         "/kernel/arch/arm/boot/uImage"
         "/kernel/arch/arm/boot/dts/meson8b_odroidc.dtb"
     )
-elif [ "$SBC" = "c2" ]; then
+elif [ "${SBC,,}" = "c2" ]; then
     export ARCH=arm64
     export CROSS_COMPILE=aarch64-linux-gnu-
     export PATH=/toolchains/gcc-linaro-aarch64-linux-gnu-4.9-2014.09_linux/bin:$PATH
@@ -83,26 +80,26 @@ else
     exit
 fi
 
-if [ "$MAKE_ARGS" = "clean" ]; then
+if [ "${MAKE_ARGS,,}" = "clean" ]; then
     msg "Clean up the workspace..."
     make -j "$(nproc)" clean
-elif [ "$MAKE_ARGS" = "defconfig" ]; then
+elif [ "${MAKE_ARGS,,}" = "defconfig" ]; then
     msg "Do make $DEFCONFIG..."
     make -j "$(nproc)" "$DEFCONFIG"
-elif [ "$MAKE_ARGS" = "menuconfig" ]; then
+elif [ "${MAKE_ARGS,,}" = "menuconfig" ]; then
     msg "Do make menuconfig..."
     make -j "$(nproc)" "menuconfig"
 else
-    if [ -z "$MAKE_ARGS" ]; then
+    if [ -z "${MAKE_ARGS,,}" ]; then
         msg "Do make..."
         make -j "$(nproc)"
     else
-        msg "Do make $MAKE_ARGS..."
-        make -j "$(nproc)" "$MAKE_ARGS"
+        msg "Do make ${MAKE_ARGS,,}..."
+        make -j "$(nproc)" "${MAKE_ARGS,,}"
     fi
 
-    if [ "$AUTO_INSTALL" = "true" ]; then
-        if [ "$MEDIA_BOOT" = "true" ]; then
+    if [ "${AUTO_INSTALL,,}" = "true" ]; then
+        if [ "${MEDIA_BOOT,,}" = "true" ]; then
             msg "Move new kernel files to boot media..."
             
             for FILE in "${BOOT_FILES[@]}"; do
@@ -110,13 +107,13 @@ else
             done
         fi
 
-        if [ "$MEDIA_ROOT" = "true" ]; then
+        if [ "${MEDIA_ROOT,,}" = "true" ]; then
             msg "Do make modules_install..."
             make -j "$(nproc)" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/media/root && sync
         fi
     fi
 
-    if [ "$OUTPUT_DIR" = "true" ]; then
+    if [ "${OUTPUT_DIR,,}" = "true" ]; then
         msg "Copy the result files to output directory..."
         for FILE in "${BOOT_FILES[@]}"; do
             cp -vf "$FILE" /output
