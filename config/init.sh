@@ -4,19 +4,19 @@ msg() {
     echo -e "- MSG: $1"
 }
 
-if [ -d "/media/boot" ]; then
+if [ -n "$(ls -A /media/boot)" ]; then
     MEDIA_BOOT=True
 else
     MEDIA_BOOT=False
 fi
 
-if [ -d "/media/root" ]; then
+if [ -n "$(ls -A /media/root)" ]; then
     MEDIA_ROOT=True
 else
     MEDIA_ROOT=False
 fi
 
-if [ -d "/output" ]; then
+if [ -n "$(ls -A /output)" ]; then
     OUTPUT_DIR=True
 else
     OUTPUT_DIR=False
