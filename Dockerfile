@@ -4,7 +4,8 @@ LABEL maintainer="Awesometic <awesometic.lab@gmail.com>" \
 
 # Visible environments
 ENV SBC="" \
-    MAKE_ARGS=""
+    MAKE_ARGS="" \
+    AUTO_INSTALL="false"
 
 # Install dependencies
 # It is divided into each command to prevent from barely caused download fail
