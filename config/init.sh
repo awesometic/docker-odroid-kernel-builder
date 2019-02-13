@@ -69,6 +69,15 @@ elif [ "${SBC,,}" = "c2" ]; then
         "/kernel/arch/arm64/boot/Image"
         "/kernel/arch/arm64/boot/dts/meson64_odroidc2.dtb"
     )
+elif [ "${SBC,,}" = "n2" ]; then
+    export ARCH=arm64
+    export CROSS_COMPILE=aarch64-linux-gnu-
+    export PATH=/toolchains/gcc-linaro-7.3.1-2018.05-i686_aarch64-linux-gnu/bin:$PATH
+    export DEFCONFIG="odroidn2_defconfig"
+    export BOOT_FILES=(
+        "/kernel/arch/arm64/boot/Image.gz"
+        "/kernel/arch/arm64/boot/dts/amlogic/meson64_odroidn2.dtb"
+    )
 else
     msg "You have to specify what ODROID SBC you will build a kernel."
     msg "This image supports only { ODROID-SBC: KERNEL }"
@@ -76,6 +85,7 @@ else
     msg "  - XU4: 4.14"
     msg "  - C1 : 3.10"
     msg "  - C2 : 3.14, 3.16"
+    msg "  - N2 : 4.9"
     msg "Program will be terminated."
     exit
 fi
@@ -103,7 +113,7 @@ else
             msg "Move new kernel files to boot media..."
             
             for FILE in "${BOOT_FILES[@]}"; do
-                cp -vf "$FILE" /media/boot
+                cp -vf "$FILE" /media/boot && sync
             done
         fi
 

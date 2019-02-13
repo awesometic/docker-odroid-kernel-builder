@@ -14,6 +14,8 @@ TC_URLS=(
     "http://dn.odroid.com/toolchains/gcc-linaro-arm-linux-gnueabihf-4.7-2013.04-20130415_linux.tar.bz2"
     # C2 (3.14, 3.16)
     "http://releases.linaro.org/archive/14.09/components/toolchain/binaries/gcc-linaro-aarch64-linux-gnu-4.9-2014.09_linux.tar.xz"
+    # N2 (4.9)
+    "http://releases.linaro.org/components/toolchain/binaries/7.3-2018.05/aarch64-linux-gnu/gcc-linaro-7.3.1-2018.05-i686_aarch64-linux-gnu.tar.xz"
 )
 
 # Extract to /toolchains directory
@@ -33,4 +35,4 @@ for URL in "${TC_URLS[@]}"; do
     fi
 done
 
-msg "Toolchains get ready."
+msg "Toolchains got ready."
