@@ -72,7 +72,7 @@ elif [ "${SBC,,}" = "c2" ]; then
 elif [ "${SBC,,}" = "n2" ]; then
     export ARCH=arm64
     export CROSS_COMPILE=aarch64-linux-gnu-
-    export PATH=/toolchains/gcc-linaro-7.3.1-2018.05-i686_aarch64-linux-gnu/bin:$PATH
+    export PATH=/toolchains/gcc-linaro-6.3.1-2017.02-x86_64_aarch64-linux-gnu/bin:$PATH
     export DEFCONFIG="odroidn2_defconfig"
     export BOOT_FILES=(
         "/kernel/arch/arm64/boot/Image.gz"
