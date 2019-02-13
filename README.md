@@ -40,6 +40,7 @@ You have to put your ODROID device name as a value of **SBC** environment variab
 * **XU4**: 4.14
 * **C1**: 3.10
 * **C2**: 3.14, 3.16
+* **N2**: 4.9
 
 **WIP:** I confirmed that it works for XU4 with 4.14 kernel, but in the other boards, it will need more tests.
 
