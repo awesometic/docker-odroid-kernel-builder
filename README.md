@@ -51,6 +51,7 @@ You can put your custom parameters for make command as a value of **MAKE_ARGS** 
 * **defconfig** for `make odroid?_defconfig`
 * **menuconfig** for `make menuconfig`
 * **clean** for `make clean`
+* **distclean** for `make distclean`
 * **No arguments** for `make`
 
 ### Install automatically to your boot media

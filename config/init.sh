@@ -93,6 +93,9 @@ fi
 if [ "${MAKE_ARGS,,}" = "clean" ]; then
     msg "Clean up the workspace..."
     make -j "$(nproc)" clean
+elif [ "${MAKE_ARGS,,}" = "distclean" ]; then
+    msg "Clean up the workspace to back to the initial state..."
+    make -j "$(nproc)" distclean
 elif [ "${MAKE_ARGS,,}" = "defconfig" ]; then
     msg "Do make $DEFCONFIG..."
     make -j "$(nproc)" "$DEFCONFIG"
