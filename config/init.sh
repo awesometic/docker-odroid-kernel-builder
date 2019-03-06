@@ -92,23 +92,23 @@ fi
 
 if [ "${MAKE_ARGS,,}" = "clean" ]; then
     msg "Clean up the workspace..."
-    make -j "$(nproc)" clean
+    make -j "$(( $(nproc) + 1 ))" clean
 elif [ "${MAKE_ARGS,,}" = "distclean" ]; then
     msg "Clean up the workspace to back to the initial state..."
-    make -j "$(nproc)" distclean
+    make -j "$(( $(nproc) + 1 ))" distclean
 elif [ "${MAKE_ARGS,,}" = "defconfig" ]; then
     msg "Do make $DEFCONFIG..."
-    make -j "$(nproc)" "$DEFCONFIG"
+    make -j "$(( $(nproc) + 1 ))" "$DEFCONFIG"
 elif [ "${MAKE_ARGS,,}" = "menuconfig" ]; then
     msg "Do make menuconfig..."
-    make -j "$(nproc)" "menuconfig"
+    make -j "$(( $(nproc) + 1 ))" "menuconfig"
 else
     if [ -z "${MAKE_ARGS,,}" ]; then
         msg "Do make..."
-        make -j "$(nproc)"
+        make -j "$(( $(nproc) + 1 ))"
     else
         msg "Do make ${MAKE_ARGS,,}..."
-        make -j "$(nproc)" "${MAKE_ARGS,,}"
+        make -j "$(( $(nproc) + 1 ))" "${MAKE_ARGS,,}"
     fi
 
     if [ "${AUTO_INSTALL,,}" = "true" ]; then
@@ -122,7 +122,7 @@ else
 
         if [ "${MEDIA_ROOT,,}" = "true" ]; then
             msg "Do make modules_install..."
-            make -j "$(nproc)" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/media/root && sync
+            make -j "$(( $(nproc) + 1 ))" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/media/root && sync
         fi
     fi
 
