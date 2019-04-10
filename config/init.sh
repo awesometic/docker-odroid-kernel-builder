@@ -106,6 +106,10 @@ else
     if [ -z "${MAKE_ARGS,,}" ]; then
         msg "Do make..."
         make -j "$(( $(nproc) + 1 ))"
+
+        if [ "$SBC" == "c1" ]; then
+            make -j "$(( $(nproc) + 1 ))" uImage
+        fi
     else
         msg "Do make ${MAKE_ARGS,,}..."
         make -j "$(( $(nproc) + 1 ))" "${MAKE_ARGS,,}"

@@ -11,7 +11,7 @@ TC_URLS=(
     # XU4 (4.14)
     "https://releases.linaro.org/components/toolchain/binaries/4.9-2017.01/arm-linux-gnueabihf/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf.tar.xz"
     # C1 (3.10)
-    "http://dn.odroid.com/toolchains/gcc-linaro-arm-linux-gnueabihf-4.7-2013.04-20130415_linux.tar.bz2"
+    "http://releases.linaro.org/archive/14.09/components/toolchain/binaries/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux.tar.xz"
     # C2 (3.14, 3.16)
     "http://releases.linaro.org/archive/14.09/components/toolchain/binaries/gcc-linaro-aarch64-linux-gnu-4.9-2014.09_linux.tar.xz"
     # N2 (4.9)

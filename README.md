@@ -42,7 +42,7 @@ You have to put your ODROID device name as a value of **SBC** environment variab
 * **C2**: 3.14, 3.16
 * **N2**: 4.9
 
-**WIP:** I confirmed that it works for XU4 with 4.14 kernel, but in the other boards, it will need more tests.
+Operation confirmed on **XU4, C1, C2, N2**.
 
 ### Parameters for make command
 
