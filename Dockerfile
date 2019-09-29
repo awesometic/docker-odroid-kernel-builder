@@ -1,5 +1,5 @@
 FROM amd64/ubuntu:bionic
-LABEL maintainer="Awesometic <awesometic.lab@gmail.com>" \
+LABEL maintainer="Yang Deokgyu <secugyu@gmail.com>" \
       description="An image to make ODROID kernel build much easier."
 
 # Visible environments
@@ -8,7 +8,7 @@ ENV SBC="" \
     AUTO_INSTALL="false"
 
 # Install dependencies
-# It is divided into each command to prevent from barely caused download fail
+# It is separated by each command to prevent from barely caused download fail when automated building from Docker hub
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get -y -q upgrade
 RUN apt-get -y -q install vim
@@ -30,16 +30,18 @@ RUN apt-get -y -q install zlib1g:i386
 RUN apt-get clean
 
 # Create directories to use
-RUN mkdir -p /toolchains
+RUN mkdir /{toolchains,output}
+RUN mkdir -p /media/{boot,rootfs}
 
 # Add shell scripts
 ADD config/init.sh /
 ADD config/prepare_toolchains.sh /
 RUN chmod a+x /*.sh
 
-# Add toolchains from the internet
+# Download toolchains from the internet
 RUN /prepare_toolchains.sh
 
 WORKDIR /kernel
-VOLUME [ "/kernel", "/media/boot", "/media/root" ]
+VOLUME [ "/kernel", "/output", "/media/boot", "/media/rootfs" ]
 ENTRYPOINT [ "/init.sh" ]
+

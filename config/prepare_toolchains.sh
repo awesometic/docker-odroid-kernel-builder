@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-msg() {
-    echo -e "- MSG: $1"
-}
-
 # Toolchain download links
 TC_URLS=(
     # XU3 (3.10, 4.9)
@@ -22,17 +18,18 @@ TC_URLS=(
 for URL in "${TC_URLS[@]}"; do
     FILE="$(echo "$URL" | sed "s/.*\///")"
 
-    msg "Download from $URL..."
     wget -nv "$URL" -P /toolchains
 
-    msg "Extract $FILE"...
-    if [[ $URL == *"tar.gz" ]]; then
-        tar xfz /toolchains/"$FILE" -C /toolchains
-    elif [[ $URL == *"tar.xz" ]]; then
-        tar xfJ /toolchains/"$FILE" -C /toolchains
-    elif [[ $URL == *"tar.bz2" ]]; then
-        tar xfj /toolchains/"$FILE" -C /toolchains
-    fi
+    case "$URL" in
+        *"tar.gz")
+            tar xfz /toolchains/"$FILE" -C /toolchains
+            ;;
+        *"tar.xz")
+            tar xfJ /toolchains/"$FILE" -C /toolchains
+            ;;
+        *"tar.bz2")
+            tar xfj /toolchains/"$FILE" -C /toolchains
+            ;;
+    esac
 done
 
-msg "Toolchains got ready."

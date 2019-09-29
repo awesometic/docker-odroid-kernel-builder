@@ -1,33 +1,27 @@
 #!/usr/bin/env bash
 
 msg() {
-    echo -e "- MSG: $1"
+    echo -e "${TEXT_BOLD}"
+    echo -e "/* $1 */"
+    echo -e "${TEXT_RESET}"
 }
 
-if [ -n "$(ls -A /media/boot)" ]; then
-    MEDIA_BOOT=True
-else
-    MEDIA_BOOT=False
-fi
+MEDIA_BOOT=False
+MEDIA_ROOTFS=False
+OUTPUT_DIR=False
 
-if [ -n "$(ls -A /media/root)" ]; then
-    MEDIA_ROOT=True
-else
-    MEDIA_ROOT=False
-fi
+[ -n "$(ls -A /media/boot)" ] && MEDIA_BOOT=True
+[ -n "$(ls -A /media/rootfs)" ] && MEDIA_ROOTFS=True
+[ -n "$(ls -A /output)" ] && OUTPUT_DIR=True
 
-if [ -n "$(ls -A /output)" ]; then
-    OUTPUT_DIR=True
-else
-    OUTPUT_DIR=False
-fi
+MAKE=$(( $(nproc) + 1 ))
 
 # Display environment variables
 echo -e "Variables:
 \\t- SBC=${SBC,,}
 \\t- MAKE_ARGS=${MAKE_ARGS,,}
 \\t- MEDIA_BOOT=${MEDIA_BOOT,,}
-\\t- MEDIA_ROOT=${MEDIA_ROOT,,}
+\\t- MEDIA_ROOT=${MEDIA_ROOTFS,,}
 \\t- OUTPUT_DIR=${OUTPUT_DIR,,}
 \\t- AUTO_INSTALL=${AUTO_INSTALL,,}"
 
@@ -80,7 +74,7 @@ elif [ "${SBC,,}" = "n2" ]; then
     )
 else
     msg "You have to specify what ODROID SBC you will build a kernel."
-    msg "This image supports only { ODROID-SBC: KERNEL }"
+    msg "This image is confirmed on { ODROID : KERNEL }"
     msg "  - XU3: 3.10, 4.9"
     msg "  - XU4: 4.14"
     msg "  - C1 : 3.10"
@@ -92,27 +86,27 @@ fi
 
 if [ "${MAKE_ARGS,,}" = "clean" ]; then
     msg "Clean up the workspace..."
-    make -j "$(( $(nproc) + 1 ))" clean
+    make -j "$MAKE" clean
 elif [ "${MAKE_ARGS,,}" = "distclean" ]; then
     msg "Clean up the workspace to back to the initial state..."
-    make -j "$(( $(nproc) + 1 ))" distclean
+    make -j "$MAKE" distclean
 elif [ "${MAKE_ARGS,,}" = "defconfig" ]; then
     msg "Do make $DEFCONFIG..."
-    make -j "$(( $(nproc) + 1 ))" "$DEFCONFIG"
+    make -j "$MAKE" "$DEFCONFIG"
 elif [ "${MAKE_ARGS,,}" = "menuconfig" ]; then
     msg "Do make menuconfig..."
-    make -j "$(( $(nproc) + 1 ))" "menuconfig"
+    make -j "$MAKE" "menuconfig"
 else
     if [ -z "${MAKE_ARGS,,}" ]; then
         msg "Do make..."
-        make -j "$(( $(nproc) + 1 ))"
+        make -j "$MAKE"
 
         if [ "$SBC" == "c1" ]; then
-            make -j "$(( $(nproc) + 1 ))" uImage
+            make -j "$MAKE" uImage
         fi
     else
         msg "Do make ${MAKE_ARGS,,}..."
-        make -j "$(( $(nproc) + 1 ))" "${MAKE_ARGS,,}"
+        make -j "$MAKE" "${MAKE_ARGS,,}"
     fi
 
     if [ "${AUTO_INSTALL,,}" = "true" ]; then
@@ -124,9 +118,9 @@ else
             done
         fi
 
-        if [ "${MEDIA_ROOT,,}" = "true" ]; then
+        if [ "${MEDIA_ROOTFS,,}" = "true" ]; then
             msg "Do make modules_install..."
-            make -j "$(( $(nproc) + 1 ))" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/media/root && sync
+            make -j "$MAKE" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/media/rootfs && sync
         fi
     fi
 
