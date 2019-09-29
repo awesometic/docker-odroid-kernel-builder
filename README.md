@@ -25,7 +25,7 @@ docker run -it --rm \
 -v /kernel/source/path:/kernel \
 -v /path/to/output:/output \
 -v /boot/media/boot/partition:/media/boot \
--v /boot/media/root/partition:/media/root \
+-v /boot/media/rootfs/partition:/media/rootfs \
 -e SBC={ name of the sbc without the prefix word odroid } \
 -e MAKE_ARGS={ make arguments you would like to use } \
 -e AUTO_INSTALL={ install automatically to the boot media after complete building kernel } \
@@ -62,7 +62,7 @@ If **OUTPUT_DIR** is set, compiled files copied to **/output** directory.
 
 ### Other imformations
 
-* The volumes for boot/root partition can be omitted so that only the kernel will be compiled.
+* The volumes for boot/rootfs partition can be omitted so that only the kernel will be compiled.
 
 * Do not run this image as a daemon. Will be terminated if it doesn't have any jobs.
 
@@ -82,4 +82,4 @@ If **OUTPUT_DIR** is set, compiled files copied to **/output** directory.
 
 ## Author
 
-[Awesometic](awesometic.lab@gmail.com)
+[Yang Deokgyu](secugyu@gmail.com)
