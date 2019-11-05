@@ -17,6 +17,8 @@ RUN apt-get -y -q install git
 RUN apt-get -y -q install gcc
 RUN apt-get -y -q install bc
 RUN apt-get -y -q install lzop
+RUN apt-get -y -q install flex
+RUN apt-get -y -q install bison
 RUN apt-get -y -q install u-boot-tools
 RUN apt-get -y -q install build-essential
 RUN apt-get -y -q install kmod
