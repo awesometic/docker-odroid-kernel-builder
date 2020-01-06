@@ -6,23 +6,20 @@ msg() {
     echo -e "${TEXT_RESET}"
 }
 
-MEDIA_BOOT=False
-MEDIA_ROOTFS=False
-OUTPUT_DIR=False
-
-[ -n "$(ls -A /media/boot)" ] && MEDIA_BOOT=True
-[ -n "$(ls -A /media/rootfs)" ] && MEDIA_ROOTFS=True
-[ -n "$(ls -A /output)" ] && OUTPUT_DIR=True
-
-MAKE=$(( $(nproc) + 1 ))
+export MAKE_JOBS="$(( $(nproc) * 6 / 5 ))"
+[ -z $USER_UID ] && USER_UID=1000
+[ -z $USER_GID ] && USER_GID=1000
+[ -n "$(ls -A /media/boot)" ] && MEDIA_BOOT=True || MEDIA_BOOT=False
+[ -n "$(ls -A /media/rootfs)" ] && MEDIA_ROOTFS=True || MEDIA_BOOT=False
 
 # Display environment variables
 echo -e "Variables:
-\\t- SBC=${SBC,,}
+\\t- USER_UID=$USER_UID
+\\t- USER_GID=$USER_GID
+\\t- SBC=$SBC
 \\t- MAKE_ARGS=${MAKE_ARGS,,}
 \\t- MEDIA_BOOT=${MEDIA_BOOT,,}
-\\t- MEDIA_ROOT=${MEDIA_ROOTFS,,}
-\\t- OUTPUT_DIR=${OUTPUT_DIR,,}
+\\t- MEDIA_ROOTFS=${MEDIA_ROOTFS,,}
 \\t- AUTO_INSTALL=${AUTO_INSTALL,,}"
 
 msg "Set environment variables for ${SBC,,}..."
@@ -84,54 +81,55 @@ else
     exit
 fi
 
-if [ "${MAKE_ARGS,,}" = "clean" ]; then
+if [ "$MAKE_ARGS" = "cleanbuild" ]; then
+    msg "Clean up the workspace then build from the scratch..."
+    make -j "$MAKE_JOBS" distclean
+    make -j "$MAKE_JOBS" "$DEFCONFIG"
+    make -j "$MAKE_JOBS"
+elif [ "$MAKE_ARGS" = "clean" ]; then
     msg "Clean up the workspace..."
-    make -j "$MAKE" clean
-elif [ "${MAKE_ARGS,,}" = "distclean" ]; then
+    make -j "$MAKE_JOBS" clean
+elif [ "$MAKE_ARGS" = "distclean" ]; then
     msg "Clean up the workspace to back to the initial state..."
-    make -j "$MAKE" distclean
-elif [ "${MAKE_ARGS,,}" = "defconfig" ]; then
+    make -j "$MAKE_JOBS" distclean
+elif [ "$MAKE_ARGS" = "defconfig" ]; then
     msg "Do make $DEFCONFIG..."
-    make -j "$MAKE" "$DEFCONFIG"
-elif [ "${MAKE_ARGS,,}" = "menuconfig" ]; then
+    make -j "$MAKE_JOBS" "$DEFCONFIG"
+elif [ "$MAKE_ARGS" = "menuconfig" ]; then
     msg "Do make menuconfig..."
-    make -j "$MAKE" "menuconfig"
+    make -j "$MAKE_JOBS" "menuconfig"
+elif [ -z "$MAKE_ARGS" ]; then
+    msg "Do make..."
+    make -j "$MAKE_JOBS"
+    if [ "$SBC" == "c1" ]; then
+        make -j "$MAKE_JOBS" uImage
+    fi
 else
-    if [ -z "${MAKE_ARGS,,}" ]; then
-        msg "Do make..."
-        make -j "$MAKE"
-
-        if [ "$SBC" == "c1" ]; then
-            make -j "$MAKE" uImage
-        fi
-    else
-        msg "Do make ${MAKE_ARGS,,}..."
-        make -j "$MAKE" "${MAKE_ARGS,,}"
-    fi
-
-    if [ "${AUTO_INSTALL,,}" = "true" ]; then
-        if [ "${MEDIA_BOOT,,}" = "true" ]; then
-            msg "Move new kernel files to boot media..."
-            
-            for FILE in "${BOOT_FILES[@]}"; do
-                cp -vf "$FILE" /media/boot && sync
-            done
-        fi
-
-        if [ "${MEDIA_ROOTFS,,}" = "true" ]; then
-            msg "Do make modules_install..."
-            make -j "$MAKE" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/media/rootfs && sync
-        fi
-    fi
-
-    if [ "${OUTPUT_DIR,,}" = "true" ]; then
-        msg "Copy the result files to output directory..."
-        for FILE in "${BOOT_FILES[@]}"; do
-            cp -vf "$FILE" /output
-        done
-    fi
-
-    sync
+    msg "Do make $MAKE_ARGS..."
+    make -j "$MAKE_JOBS" "$MAKE_ARGS"
 fi
 
+if [ "$AUTO_INSTALL" = "true" ]; then
+    if [ "$MEDIA_BOOT" = "true" ]; then
+        msg "Move new kernel files to boot media..."
+        for FILE in "${BOOT_FILES[@]}"; do
+            cp -vf "$FILE" /media/boot && sync
+        done
+    fi
+    if [ "$MEDIA_ROOTFS" = "true" ]; then
+        msg "Do make modules_install..."
+        make -j "$MAKE_JOBS" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/media/rootfs && sync
+    fi
+fi
+
+msg "Copy the result files to the output directory. Check if you have given a output directory..."
+for FILE in "${BOOT_FILES[@]}"; do
+    cp -afv "$FILE" /output
+done
+
+msg "Change ownership..."
+chown -R "$USER_UID":"$USER_GID" /kernel
+chown -R "$USER_UID":"$USER_GID" /output
+
+sync
 msg "All processes are done!"

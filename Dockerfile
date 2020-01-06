@@ -1,6 +1,6 @@
 FROM amd64/ubuntu:bionic
 LABEL maintainer="Yang Deokgyu <secugyu@gmail.com>" \
-      description="An image to make ODROID kernel build much easier."
+      description="An image to make Odroid kernel build much easier."
 
 # Visible environments
 ENV SBC="" \
