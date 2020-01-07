@@ -1,5 +1,12 @@
 # docker-odroid-kernel-builder
 
+![](https://img.shields.io/docker/automated/awesometic/odroid-kernel-builder)
+![](https://img.shields.io/docker/build/awesometic/odroid-kernel-builder)
+![](https://img.shields.io/microbadger/image-size/awesometic/odroid-kernel-builder)
+![](https://img.shields.io/microbadger/layers/awesometic/odroid-kernel-builder)
+![](https://img.shields.io/docker/pulls/awesometic/odroid-kernel-builder)
+![](https://img.shields.io/docker/stars/awesometic/odroid-kernel-builder)
+
 ## What is this
 
 This image is written for easy compile on development of **Odroid Linux kernel**.
