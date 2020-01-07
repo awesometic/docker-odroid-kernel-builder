@@ -30,6 +30,8 @@ The basic usage is,
 docker run -it --rm \
 -v { Kernel source path }:/kernel \
 -v { Path to receive output kernel binaries from the image }:/output \
+-v { Path to boot media's boot partition }:/media/boot \
+-v { Path to boot media's rootfs partition }:/media/rootfs \
 -e USER_UID={ UID to correct ownership, set 1000 by default } \
 -e USER_GID={ GID to correct ownership, set 1000 by default } \
 -e SBC={ The name of your SBC without the prefix word Odroid } \
@@ -70,6 +72,8 @@ awesometic/odroid-kernel-builder
 ```bash
 docker run -it --rm \
 -v $(pwd):/kernel \
+-v /media/boot:/media/boot \
+-v /media/rootfs:/media/rootfs \
 -e USER_UID=$UID \
 -e USER_GID=$GID \
 -e SBC=n2 \
