@@ -13,6 +13,7 @@ RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get -y -q upgrade
 RUN apt-get -y -q install vim
 RUN apt-get -y -q install wget
+RUN apt-get -y -q install rsync
 RUN apt-get -y -q install git
 RUN apt-get -y -q install gcc
 RUN apt-get -y -q install bc

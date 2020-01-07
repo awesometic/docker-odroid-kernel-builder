@@ -106,26 +106,11 @@ elif [ -z "$MAKE_ARGS" ]; then
     if [ "$SBC" == "c1" ]; then
         make -j "$MAKE_JOBS" uImage
     fi
+    msg "Do make modules_install to the output directory..."
+    make -j "$MAKE_JOBS" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/output && sync
 else
     msg "Do make $MAKE_ARGS..."
     make -j "$MAKE_JOBS" "$MAKE_ARGS"
-fi
-
-if [ "$AUTO_INSTALL" = "true" ]; then
-    if [ "$MEDIA_BOOT" = "true" ]; then
-        msg "Move new kernel files to boot media..."
-        for FILE in "${BOOT_FILES[@]}"; do
-            cp -vf "$FILE" /media/boot && sync
-        done
-        if [ -n "$OVERLAYS_DIR" ] && [ -d "$OVERLAYS_DIR" ]; then
-            [ -d "/media/boot/overlays" ] || mkdir -p /media/boot/overlays
-            cp -vf "$OVERLAYS_DIR"/*.dtbo /media/boot/overlays
-        fi
-    fi
-    if [ "$MEDIA_ROOTFS" = "true" ]; then
-        msg "Do make modules_install..."
-        make -j "$MAKE_JOBS" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/media/rootfs && sync
-    fi
 fi
 
 msg "Copy the result files to the output directory. Check if you have given a output directory..."
@@ -135,6 +120,23 @@ done
 if [ -n "$OVERLAYS_DIR" ] && [ -d "$OVERLAYS_DIR" ]; then
     [ -d "/output/overlays" ] || mkdir -p /output/overlays
     cp -vf "$OVERLAYS_DIR"/*.dtbo /output/overlays
+fi
+
+if [ "$AUTO_INSTALL" = "true" ]; then
+    if [ "$MEDIA_BOOT" = "true" ]; then
+        msg "Move the new kernel files to the boot media's boot partition..."
+        for FILE in "${BOOT_FILES[@]}"; do
+            cp -vf "$FILE" /media/boot && sync
+        done
+        if [ -n "$OVERLAYS_DIR" ] && [ -d "$OVERLAYS_DIR" ]; then
+            [ -d "/media/boot/overlays" ] || mkdir -p /media/boot/overlays
+            cp -vf "$OVERLAYS_DIR"/*.dtbo /media/boot/overlays
+        fi
+    fi
+    if [ "$MEDIA_ROOTFS" = "true" ]; then
+        msg "Move the new module files to the boot media's rootfs partition..."
+        rsync -avz /output/lib/modules/ /media/rootfs/lib/modules/ && sync
+    fi
 fi
 
 msg "Change ownership..."
