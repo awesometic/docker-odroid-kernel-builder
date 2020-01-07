@@ -37,6 +37,7 @@ elif [ "${SBC,,}" = "xu4" ]; then
     export CROSS_COMPILE=arm-linux-gnueabihf-
     export PATH=/toolchains/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/bin:$PATH
     export DEFCONFIG="odroidxu4_defconfig"
+    export OVERLAYS_DIR="/kernel/arch/arm/boot/dts/overlays"
     export BOOT_FILES=(
         "/kernel/arch/arm/boot/zImage"
         "/kernel/arch/arm/boot/dts/exynos5422-odroidxu4.dtb"
@@ -65,6 +66,7 @@ elif [ "${SBC,,}" = "n2" ]; then
     export CROSS_COMPILE=aarch64-linux-gnu-
     export PATH=/toolchains/gcc-linaro-6.3.1-2017.02-x86_64_aarch64-linux-gnu/bin:$PATH
     export DEFCONFIG="odroidn2_defconfig"
+    export OVERLAYS_DIR="/kernel/arch/arm64/boot/dts/amlogic/overlays"
     export BOOT_FILES=(
         "/kernel/arch/arm64/boot/Image.gz"
         "/kernel/arch/arm64/boot/dts/amlogic/meson64_odroidn2.dtb"
@@ -115,6 +117,10 @@ if [ "$AUTO_INSTALL" = "true" ]; then
         for FILE in "${BOOT_FILES[@]}"; do
             cp -vf "$FILE" /media/boot && sync
         done
+        if [ -n "$OVERLAYS_DIR" ] && [ -d "$OVERLAYS_DIR" ]; then
+            [ -d "/media/boot/overlays" ] || mkdir -p /media/boot/overlays
+            cp -vf "$OVERLAYS_DIR"/*.dtbo /media/boot/overlays
+        fi
     fi
     if [ "$MEDIA_ROOTFS" = "true" ]; then
         msg "Do make modules_install..."
@@ -126,6 +132,10 @@ msg "Copy the result files to the output directory. Check if you have given a ou
 for FILE in "${BOOT_FILES[@]}"; do
     cp -afv "$FILE" /output
 done
+if [ -n "$OVERLAYS_DIR" ] && [ -d "$OVERLAYS_DIR" ]; then
+    [ -d "/output/overlays" ] || mkdir -p /output/overlays
+    cp -vf "$OVERLAYS_DIR"/*.dtbo /output/overlays
+fi
 
 msg "Change ownership..."
 chown -R "$USER_UID":"$USER_GID" /kernel
