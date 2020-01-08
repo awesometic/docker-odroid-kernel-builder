@@ -7,23 +7,26 @@ msg() {
 }
 
 export MAKE_JOBS="$(( $(nproc) * 6 / 5 ))"
+export MAKE_AGRS="${MAKE_ARGS,,}"
+export SBC="${SBC,,}"
+export AUTO_INSTALL="${AUTO_INSTALL,,}"
 [ -z $USER_UID ] && USER_UID=1000
 [ -z $USER_GID ] && USER_GID=1000
-[ -n "$(ls -A /media/boot)" ] && MEDIA_BOOT=True || MEDIA_BOOT=False
-[ -n "$(ls -A /media/rootfs)" ] && MEDIA_ROOTFS=True || MEDIA_BOOT=False
+[ -n "$(ls -A /media/boot)" ] && MEDIA_BOOT=true || MEDIA_BOOT=false
+[ -n "$(ls -A /media/rootfs)" ] && MEDIA_ROOTFS=true || MEDIA_BOOT=false
 
 # Display environment variables
 echo -e "Variables:
 \\t- USER_UID=$USER_UID
 \\t- USER_GID=$USER_GID
 \\t- SBC=$SBC
-\\t- MAKE_ARGS=${MAKE_ARGS,,}
-\\t- MEDIA_BOOT=${MEDIA_BOOT,,}
-\\t- MEDIA_ROOTFS=${MEDIA_ROOTFS,,}
-\\t- AUTO_INSTALL=${AUTO_INSTALL,,}"
+\\t- MAKE_ARGS=$MAKE_ARGS
+\\t- MEDIA_BOOT=$MEDIA_BOOT
+\\t- MEDIA_ROOTFS=$MEDIA_ROOTFS
+\\t- AUTO_INSTALL=$AUTO_INSTALL"
 
-msg "Set environment variables for ${SBC,,}..."
-if [ "${SBC,,}" = "xu3" ]; then
+msg "Set environment variables for $SBC..."
+if [ "$SBC" = "xu3" ]; then
     export ARCH=arm
     export CROSS_COMPILE=arm-eabi-
     export PATH=/toolchains/arm-eabi-4.6/bin:$PATH
@@ -32,7 +35,7 @@ if [ "${SBC,,}" = "xu3" ]; then
         "/kernel/arch/arm/boot/zImage"
         "/kernel/arch/arm/boot/dts/exynos5422-odroidxu3.dtb"
     )
-elif [ "${SBC,,}" = "xu4" ]; then
+elif [ "$SBC" = "xu4" ]; then
     export ARCH=arm
     export CROSS_COMPILE=arm-linux-gnueabihf-
     export PATH=/toolchains/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/bin:$PATH
@@ -43,7 +46,7 @@ elif [ "${SBC,,}" = "xu4" ]; then
         "/kernel/arch/arm/boot/dts/exynos5422-odroidxu4.dtb"
         "/kernel/arch/arm/boot/dts/exynos5422-odroidxu4-kvm.dtb"
     )
-elif [ "${SBC,,}" = "c1" ]; then
+elif [ "$SBC" = "c1" ]; then
     export ARCH=arm
     export CROSS_COMPILE=arm-linux-gnueabihf-
     export PATH=/toolchains/gcc-linaro-arm-linux-gnueabihf-4.9-2014.09_linux/bin:$PATH
@@ -52,7 +55,7 @@ elif [ "${SBC,,}" = "c1" ]; then
         "/kernel/arch/arm/boot/uImage"
         "/kernel/arch/arm/boot/dts/meson8b_odroidc.dtb"
     )
-elif [ "${SBC,,}" = "c2" ]; then
+elif [ "$SBC" = "c2" ]; then
     export ARCH=arm64
     export CROSS_COMPILE=aarch64-linux-gnu-
     export PATH=/toolchains/gcc-linaro-aarch64-linux-gnu-4.9-2014.09_linux/bin:$PATH
@@ -61,7 +64,7 @@ elif [ "${SBC,,}" = "c2" ]; then
         "/kernel/arch/arm64/boot/Image"
         "/kernel/arch/arm64/boot/dts/meson64_odroidc2.dtb"
     )
-elif [ "${SBC,,}" = "n2" ]; then
+elif [ "$SBC" = "n2" ]; then
     export ARCH=arm64
     export CROSS_COMPILE=aarch64-linux-gnu-
     export PATH=/toolchains/gcc-linaro-6.3.1-2017.02-x86_64_aarch64-linux-gnu/bin:$PATH
