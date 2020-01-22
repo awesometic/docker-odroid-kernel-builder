@@ -91,6 +91,7 @@ if [ "$MAKE_ARGS" = "cleanbuild" ]; then
     make -j "$MAKE_JOBS" distclean
     make -j "$MAKE_JOBS" "$DEFCONFIG"
     make -j "$MAKE_JOBS"
+    make -j "$MAKE_JOBS" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/output && sync
 elif [ "$MAKE_ARGS" = "clean" ]; then
     msg "Clean up the workspace..."
     make -j "$MAKE_JOBS" clean
