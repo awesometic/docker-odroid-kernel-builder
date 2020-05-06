@@ -139,4 +139,4 @@ Do not run this image as a daemon. Promptly to be terminated because it doesn't 
 
 ## Author
 
-[Yang Deokgyu](secugyu@gmail.com)
+[Deokgyu Yang](secugyu@gmail.com)

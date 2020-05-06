@@ -1,5 +1,5 @@
 FROM amd64/ubuntu:bionic
-LABEL maintainer="Yang Deokgyu <secugyu@gmail.com>" \
+LABEL maintainer="Deokgyu Yang <secugyu@gmail.com>" \
       description="An image to make Odroid kernel build much easier."
 
 # Visible environments
