@@ -69,7 +69,7 @@ elif [ "$SBC" = "n2" ]; then
     export CROSS_COMPILE=aarch64-linux-gnu-
     export PATH=/toolchains/gcc-linaro-6.3.1-2017.02-x86_64_aarch64-linux-gnu/bin:$PATH
     export DEFCONFIG="odroidn2_defconfig"
-    export OVERLAYS_DIR="/kernel/arch/arm64/boot/dts/amlogic/overlays-n2"
+    export OVERLAYS_DIR="/kernel/arch/arm64/boot/dts/amlogic/overlays/n2"
     export BOOT_FILES=(
         "/kernel/arch/arm64/boot/Image.gz"
         "/kernel/arch/arm64/boot/dts/amlogic/meson64_odroidn2.dtb"
@@ -79,7 +79,7 @@ elif [ "$SBC" = "c4" ]; then
     export CROSS_COMPILE=aarch64-linux-gnu-
     export PATH=/toolchains/gcc-linaro-6.3.1-2017.02-x86_64_aarch64-linux-gnu/bin:$PATH
     export DEFCONFIG="odroidg12_defconfig"
-    export OVERLAYS_DIR="/kernel/arch/arm64/boot/dts/amlogic/overlays-c4"
+    export OVERLAYS_DIR="/kernel/arch/arm64/boot/dts/amlogic/overlays/c4"
     export BOOT_FILES=(
         "/kernel/arch/arm64/boot/Image.gz"
         "/kernel/arch/arm64/boot/dts/amlogic/meson64_odroidc4.dtb"
@@ -160,3 +160,4 @@ chown -R "$USER_UID":"$USER_GID" /output
 
 sync
 msg "All processes are done!"
+
