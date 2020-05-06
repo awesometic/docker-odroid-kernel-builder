@@ -1,4 +1,4 @@
-FROM amd64/ubuntu:bionic
+FROM amd64/ubuntu:focal
 LABEL maintainer="Deokgyu Yang <secugyu@gmail.com>" \
       description="An image to make Odroid kernel build much easier."
 
@@ -11,6 +11,7 @@ ENV SBC="" \
 # It is separated by each command to prevent from barely caused download fail when automated building from Docker hub
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get -y -q upgrade
+RUN apt-get -y -q install apt-utils
 RUN apt-get -y -q install vim
 RUN apt-get -y -q install wget
 RUN apt-get -y -q install rsync
@@ -25,7 +26,6 @@ RUN apt-get -y -q install build-essential
 RUN apt-get -y -q install kmod
 RUN apt-get -y -q install libssl-dev
 RUN apt-get -y -q install libncurses5-dev
-RUN apt-get -y -q install libqt4-dev
 RUN apt-get -y -q install lib32z1
 RUN apt-get -y -q install libc6-i386
 RUN apt-get -y -q install lib32stdc++6
