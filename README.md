@@ -99,6 +99,7 @@ You have to put your Odroid device name as a value of **SBC** environment variab
 * **C1**: 3.10
 * **C2**: 3.14, 3.16
 * **N2**: 4.9
+* **C4**: 4.9
 
 Operation confirmed on **XU4, C1, C2, N2**.
 
