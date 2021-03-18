@@ -68,13 +68,14 @@ elif [ "$SBC" = "n2" ]; then
     export ARCH=arm64
     export CROSS_COMPILE=aarch64-linux-gnu-
     export PATH=/toolchains/gcc-linaro-6.3.1-2017.02-x86_64_aarch64-linux-gnu/bin:$PATH
-    export DEFCONFIG="odroidn2_defconfig"
+    export DEFCONFIG="odroidg12_defconfig"
     export OVERLAYS_DIR="/kernel/arch/arm64/boot/dts/amlogic/overlays/n2"
     export BOOT_FILES=(
         "/kernel/arch/arm64/boot/Image.gz"
         "/kernel/arch/arm64/boot/dts/amlogic/meson64_odroidn2.dtb"
+        "/kernel/arch/arm64/boot/dts/amlogic/meson64_odroidn2_plus.dtb"
     )
-elif [ "$SBC" = "c4" ]; then
+elif [ "$SBC" = "c4" ] || [ "$SBC" = "hc4" ]; then
     export ARCH=arm64
     export CROSS_COMPILE=aarch64-linux-gnu-
     export PATH=/toolchains/gcc-linaro-6.3.1-2017.02-x86_64_aarch64-linux-gnu/bin:$PATH
@@ -83,16 +84,17 @@ elif [ "$SBC" = "c4" ]; then
     export BOOT_FILES=(
         "/kernel/arch/arm64/boot/Image.gz"
         "/kernel/arch/arm64/boot/dts/amlogic/meson64_odroidc4.dtb"
+        "/kernel/arch/arm64/boot/dts/amlogic/meson64_odroidhc4.dtb"
     )
 else
     msg "You have to specify what ODROID SBC you will build a kernel."
     msg "This image is confirmed on { ODROID : KERNEL }"
-    msg "  - XU3: 3.10, 4.9"
-    msg "  - XU4: 4.14"
-    msg "  - C1 : 3.10"
-    msg "  - C2 : 3.14, 3.16"
-    msg "  - N2 : 4.9"
-    msg "  - C4 : 4.9"
+    msg "  - XU3    : 3.10, 4.9"
+    msg "  - XU4    : 4.14, 5.4"
+    msg "  - C1     : 3.10"
+    msg "  - C2     : 3.14, 3.16"
+    msg "  - N2     : 4.9"
+    msg "  - C4/HC4 : 4.9"
     msg "Program will be terminated."
     exit
 fi
