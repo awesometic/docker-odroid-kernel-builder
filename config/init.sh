@@ -101,22 +101,22 @@ fi
 
 if [ "$MAKE_ARGS" = "cleanbuild" ]; then
     msg "Clean up the workspace then build from the scratch..."
-    make -j "$MAKE_JOBS" distclean
-    make -j "$MAKE_JOBS" "$DEFCONFIG"
+    make -j distclean
+    make -j "$DEFCONFIG"
     make -j "$MAKE_JOBS"
-    make -j "$MAKE_JOBS" modules_install ARCH=$ARCH INSTALL_MOD_PATH=/output && sync
+    make -j modules_install ARCH=$ARCH INSTALL_MOD_PATH=/output && sync
 elif [ "$MAKE_ARGS" = "clean" ]; then
     msg "Clean up the workspace..."
-    make -j "$MAKE_JOBS" clean
+    make -j clean
 elif [ "$MAKE_ARGS" = "distclean" ]; then
     msg "Clean up the workspace to back to the initial state..."
-    make -j "$MAKE_JOBS" distclean
+    make -j distclean
 elif [ "$MAKE_ARGS" = "defconfig" ]; then
     msg "Do make $DEFCONFIG..."
-    make -j "$MAKE_JOBS" "$DEFCONFIG"
+    make -j "$DEFCONFIG"
 elif [ "$MAKE_ARGS" = "menuconfig" ]; then
     msg "Do make menuconfig..."
-    make -j "$MAKE_JOBS" "menuconfig"
+    make -j "menuconfig"
 elif [ -z "$MAKE_ARGS" ]; then
     msg "Do make..."
     make -j "$MAKE_JOBS"
