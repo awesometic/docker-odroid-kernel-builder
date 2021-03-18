@@ -11,23 +11,31 @@
 
 This image is written for easy compile on development of **Odroid Linux kernel**.
 
-This has each toolchain of the Odroid boards in advance, respectively. So you can compile with only **download Odroid kernel source code** and **pulling/running this image**.
+This has all the toolchain the Odroid boards requires in advance. So you can compile your custom Linux kernel by just **downloading Odroid kernel source tree** and **running this image**.
 
-## Is this run on macOS or Windows
+## Performance on Windows and macOS
 
-Unfortunately, **partly not**.
+Unfortunately, **it should be too slow**.
 
-This image runs on Ubuntu Linux based, which means that it runs on Linux Kernel. In macOS or Windows, their Docker will run this image on Linux VM due to the absence of the native Linux kernel on them.
+This image runs on Ubuntu Linux based, which means that it runs on Linux Kernel. In macOS or Windows, their Docker uses the specific virtual engine provided by each OS to emulate the Linux environment.
 
-So that the performance is tooooo slower than the native Linux machine does. In my case, on macOS 10.14 with E3-1230v3 processor, it takes more than 2 hours for compiling XU4 kernel.
+So that the performance is tooooo slower than the native Linux machine does. In my case, on macOS 10.14 with E3-1230v3 processor, it takes more than 2 hours for compiling XU4 kernel. This might be acceptable for someone but it may not in most cases.
+
+Thus, it should work on any Docker supported system but the performance will be very slow.
 
 For further information, please refer to [References](#References) section of this documents.
 
 ### WSL 2 (Windows Subsystem for Linux)
 
-However, if you use Windows 20h1 or higher, you can build as fast as on the Linux system. In my experience, that difference is only a few minutes, probably it can be seconds for the powerful system.
+However, if you use Windows 20h1 or higher, you can build as fast as on the Linux system thanks to the WSL 2 that is introduced in modern Windows 10.
+
+In my experience, that difference is only a few minutes between native Linux and WSL 2. Probably it can be just a few seconds for the powerful system.
 
 You can refer to this link to know about [Docker WSL2 backend](https://docs.docker.com/docker-for-windows/wsl-tech-preview/).
+
+## Only supports Hardkernel official Ubuntu image
+
+It is not suitable for third party images like Android kernel, @tobetter's Debian/Ubuntu, and Armbian, DietPi. All these images have different kernel source tree and also has differed boot directory structure.
 
 ## How to use
 
@@ -91,46 +99,37 @@ awesometic/odroid-kernel-builder
 
 ### Choose a type of SBC
 
-
 You have to put your Odroid device name as a value of **SBC** environment variable. Current supported list with board and its supported U-Boot versions is here.
 
 * **XU3**: 3.10, 4.9
-* **XU4**: 4.14
+* **XU4**: 4.14, 5.4
 * **C1**: 3.10
 * **C2**: 3.14, 3.16
 * **N2**: 4.9
-* **C4**: 4.9
-
-Operation confirmed on **XU4, C1, C2, N2**.
+* **C4/HC4**: 4.9
 
 ### Parameters for make command
 
 You can put your parameters for the make command as a value of **MAKE_ARGS** environment variable. Here are the confirmed operations.
 
-* **defconfig** for `make odroid$SBC_defconfig` repectively
-* **menuconfig** for `make menuconfig`
-* **clean** for `make clean`
-* **distclean** for `make distclean`
-* **cleanbuild** for `make distclean; make odroid$SBC_defconfig; make`
-* **{no args}** for `make`
+* **defconfig**:`make odroid???_defconfig` for the given SBC environment value
+* **menuconfig**: `make menuconfig`
+* **clean**: `make clean`
+* **distclean**: `make distclean`
+* **cleanbuild**: `make distclean; make odroid???_defconfig; make`
+* **Given nothing**: `make`
+
+The building process will use all the available CPU cores by using `"$(nproc) * 6 / 5"` fomula.
 
 ### Install automatically to your boot media
 
 If you want to **install the kernel image/dtb/modules to your boot media automatically**, make sure that your boot media mounted in advance to pass its partitions to container as the volumes. Then give the environment variable **AUTO_INSTALL=true**. In most of the Linux DISTROs, after inserting the boot media then that will be mounted to under **/media/$USER** directory
 
-### No Daemon mode
+### Do not treat it as a daemon mode
 
 Do not run this image as a daemon. Promptly to be terminated because it doesn't have any jobs to do.
 
 ## References
-
-### HARDKERNEL
-
-* [Official Websites](https://www.hardkernel.com)
-* [Wiki](https://wiki.odroid.com)
-* [Forum](https://forum.odroid.com)
-
-### General
 
 * [Documents of "docker run"](https://docs.docker.com/engine/reference/commandline/run/)
 * [EXT4 on macOS](https://apple.stackexchange.com/questions/140536/how-do-i-mount-ext4-using-os-x-fuse)
@@ -139,4 +138,4 @@ Do not run this image as a daemon. Promptly to be terminated because it doesn't 
 
 ## Author
 
-[Deokgyu Yang](secugyu@gmail.com)
+Deokgyu Yang (<secugyu@gmail.com>)
