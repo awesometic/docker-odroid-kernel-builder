@@ -1,11 +1,10 @@
 # docker-odroid-kernel-builder
 
-![](https://img.shields.io/docker/automated/awesometic/odroid-kernel-builder)
-![](https://img.shields.io/docker/build/awesometic/odroid-kernel-builder)
-![](https://img.shields.io/microbadger/image-size/awesometic/odroid-kernel-builder)
-![](https://img.shields.io/microbadger/layers/awesometic/odroid-kernel-builder)
-![](https://img.shields.io/docker/pulls/awesometic/odroid-kernel-builder)
-![](https://img.shields.io/docker/stars/awesometic/odroid-kernel-builder)
+![](https://img.shields.io/github/workflow/status/awesometic/docker-odroid-kernel-builder/buildx?style=flat-square)
+
+![](https://img.shields.io/docker/image-size/awesometic/odroid-kernel-builder/latest?style=flat-square)
+![](https://img.shields.io/docker/pulls/awesometic/odroid-kernel-builder?style=flat-square)
+![](https://img.shields.io/docker/stars/awesometic/odroid-kernel-builder?style=flat-square)
 
 ## What is this
 
@@ -39,7 +38,7 @@ It is not suitable for third party images like Android kernel, @tobetter's Debia
 
 ## How to use
 
-The basic usage is,
+The full usage is,
 
 ```bash
 docker run -it --rm \
@@ -57,7 +56,7 @@ awesometic/odroid-kernel-builder
 
 Looks quite complicate. The examples in the below.
 
-* Just check build time
+* Just check build time for N2
 
 ```bash
 docker run -it --rm \
@@ -69,7 +68,7 @@ docker run -it --rm \
 awesometic/odroid-kernel-builder
 ```
 
-* Save the built kernel results to the shared folder
+* Save the built kernel results such as kernel image, DTBs to the shared folder names "kernel-outputs".
 
 ```bash
 docker run -it --rm \
@@ -82,7 +81,8 @@ docker run -it --rm \
 awesometic/odroid-kernel-builder
 ```
 
-* Install automatically to your boot media
+* Install automatically to your boot media. Building a kernel is for replacing the current kernel with the custom one in most cases, the boot media should have the correct partitions by flashing the other official Ubuntu image before. **The third party images are not supported**.
+* In this case, the boot, rootfs partitions are mounted to the corresponding directories respectively on the host PC. If `AUTO_INSTALL` is set to false, the `/media/boot`, `/media/rootfs` volumes will be not affect anything.
 
 ```bash
 docker run -it --rm \
@@ -99,7 +99,7 @@ awesometic/odroid-kernel-builder
 
 ### Choose a type of SBC
 
-You have to put your Odroid device name as a value of **SBC** environment variable. Current supported list with board and its supported U-Boot versions is here.
+You have to put your Odroid device name as a value of `SBC` environment variable. Currently supported boards are here.
 
 * **XU3**: 3.10, 4.9
 * **XU4**: 4.14, 5.4
@@ -110,7 +110,7 @@ You have to put your Odroid device name as a value of **SBC** environment variab
 
 ### Parameters for make command
 
-You can put your parameters for the make command as a value of **MAKE_ARGS** environment variable. Here are the confirmed operations.
+You can put your parameters for the make command as a value of `MAKE_ARGS` environment variable. Here are the prepared make options.
 
 * **defconfig**:`make odroid???_defconfig` for the given SBC environment value
 * **menuconfig**: `make menuconfig`
@@ -121,13 +121,9 @@ You can put your parameters for the make command as a value of **MAKE_ARGS** env
 
 The building process will use all the available CPU cores by using `"$(nproc) * 6 / 5"` fomula.
 
-### Install automatically to your boot media
-
-If you want to **install the kernel image/dtb/modules to your boot media automatically**, make sure that your boot media mounted in advance to pass its partitions to container as the volumes. Then give the environment variable **AUTO_INSTALL=true**. In most of the Linux DISTROs, after inserting the boot media then that will be mounted to under **/media/$USER** directory
-
 ### Do not treat it as a daemon mode
 
-Do not run this image as a daemon. Promptly to be terminated because it doesn't have any jobs to do.
+Do not run this image as a daemon. Promptly to be terminated because it doesn't have any jobs to keep doing.
 
 ## References
 
